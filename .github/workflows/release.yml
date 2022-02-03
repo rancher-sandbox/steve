@@ -6,8 +6,14 @@ on:
       - '*'
 
 jobs:
-  linux-build:
-    runs-on: ubuntu-latest
+  build:
+    strategy:
+      matrix:
+        os:
+        - macos-10.15
+        - windows-2019
+        - ubuntu-latest
+    runs-on: ${{ matrix.os }}
     steps: 
     - uses: actions/setup-go@v2
       with:
@@ -24,11 +30,28 @@ jobs:
         cd src/steve
         go build
     
-    - name: Upload Build
+    - name: Upload Linux Build
       uses: actions/upload-artifact@v2
+      if: startsWith(matrix.os, 'ubuntu-')
       with:
         name: steve.linux
         path: ./src/steve/steve
+        if-no-files-found: error
+
+    - name: Upload macOS Build
+      uses: actions/upload-artifact@v2
+      if: startsWith(matrix.os, 'macos-10')
+      with:
+        name: steve.macos
+        path: ./src/steve/steve
+        if-no-files-found: error
+
+    - name: Upload Windows Build
+      uses: actions/upload-artifact@v2
+      if: startsWith(matrix.os, 'windows-')
+      with:
+        name: steve.exe
+        path: ./src/steve/steve.exe
         if-no-files-found: error
 
     
