@@ -1,0 +1,3 @@
+[submodule "src/steve"]
+	path = src/steve
+	url = git@github.com:rancher/steve.git
