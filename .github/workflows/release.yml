@@ -1,0 +1,34 @@
+name: Build and Release Steve API
+
+on: 
+  push:
+    tags:
+      - '*'
+
+jobs:
+  linux-build:
+    runs-on: ubuntu-latest
+    steps: 
+    - uses: actions/setup-go@v2
+      with:
+        go-version: 1.17.x
+
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 1
+        submodules: recursive
+        persist-credentials: false
+    
+    - name: Build Steve API
+      run: |
+        cd src/steve
+        go build
+    
+    - name: Upload Build
+      uses: actions/upload-artifact@v2
+      with:
+        name: steve.linux
+        path: ./src/steve
+        if-no-files-found: error
+
+    
