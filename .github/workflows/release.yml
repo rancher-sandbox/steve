@@ -36,10 +36,18 @@ jobs:
         cd src/steve
         go build
     
-    - name: Upload Linux Build
+    - name: Upload Build
       uses: actions/upload-artifact@v2
       with:
         name: ${{ matrix.asset_name }}
         path: ./src/steve/${{ matrix.artifact_name }}
         if-no-files-found: error
+
+    - name: Upload Assets
+      uses: SierraSoftworks/gh-releases@v1.0.4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        overwrite: 'false'
+        files: |
+          - ./src/steve/${{ matrix.artifact_name }}
     
