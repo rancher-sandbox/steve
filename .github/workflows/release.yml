@@ -28,7 +28,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: steve.linux
-        path: ./src/steve
+        path: ./src/steve/steve
         if-no-files-found: error
 
     
