@@ -9,10 +9,16 @@ jobs:
   build:
     strategy:
       matrix:
-        os:
-        - macos-10.15
-        - windows-2019
-        - ubuntu-latest
+        include:
+        - os: macos-10.15
+          artifact_name: steve
+          asset_name: steve-macos-amd64
+        - os: windows-2019
+          artifact_name: steve.exe
+          asset_name: steve-windows-amd64
+        - os: ubuntu-latest
+          artifact_name: steve
+          asset_name: steve-linux-amd64
     runs-on: ${{ matrix.os }}
     steps: 
     - uses: actions/setup-go@v2
@@ -32,26 +38,8 @@ jobs:
     
     - name: Upload Linux Build
       uses: actions/upload-artifact@v2
-      if: startsWith(matrix.os, 'ubuntu-')
       with:
-        name: steve.linux
-        path: ./src/steve/steve
+        name: ${{ matrix.asset_name }}
+        path: ./src/steve/${{ matrix.artifact_name }}
         if-no-files-found: error
-
-    - name: Upload macOS Build
-      uses: actions/upload-artifact@v2
-      if: startsWith(matrix.os, 'macos-10')
-      with:
-        name: steve.macos
-        path: ./src/steve/steve
-        if-no-files-found: error
-
-    - name: Upload Windows Build
-      uses: actions/upload-artifact@v2
-      if: startsWith(matrix.os, 'windows-')
-      with:
-        name: steve.exe
-        path: ./src/steve/steve.exe
-        if-no-files-found: error
-
     
