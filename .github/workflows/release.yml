@@ -44,10 +44,9 @@ jobs:
         if-no-files-found: error
 
     - name: Upload Assets
-      uses: SierraSoftworks/gh-releases@v1.0.4
+      uses: svenstaro/upload-release-action@v2
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        overwrite: 'false'
-        files: |
-          - ./src/steve/${{ matrix.artifact_name }}
-    
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: ./src/steve/${{ matrix.artifact_name }}
+        asset_name: ${{ matrix.asset_name }}
+        tag: ${{ github.ref }}
