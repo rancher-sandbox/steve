@@ -28,14 +28,14 @@ jobs:
     - name: Upload Build
       uses: actions/upload-artifact@v2
       with:
-        path: ./src/steve/release*
+        path: ./src/steve/release/*
         if-no-files-found: error
 
     - name: Upload Assets
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ./src/steve/release*
+        file: ./src/steve/release/*
         tag: ${{ github.ref }}
         file_glob: true
   
