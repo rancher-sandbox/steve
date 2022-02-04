@@ -2,8 +2,9 @@
 
 package_name=steve
 platforms=("darwin/amd64" "darwin/arm64" "linux/amd64" "windows/amd64")
+output=()
 
-pushd ../src/steve
+cd ../src/steve
 
 for platform in "${platforms[@]}"
 do
@@ -11,13 +12,16 @@ do
   GOOS=${platform_split[0]}
   GOARCH=${platform_split[1]}
 
-  output_name=$package_name
-  compressed_name="${output_name}-${GOOS}-${GOARCH}.tar.gz"
+  bin_name=$package_name
+  output_name="${bin_name}-${GOOS}-${GOARCH}.tar.gz"
 
   if [ $GOOS = "windows" ]; then
-    output_name+=".exe"
+    bin_name+=".exe"
   fi
 
-  env GOOS=$GOOS GOARCH=$GOARCH go build -o $output_name $package
-  tar -czvf $compressed_name $output_name
+  env GOOS=$GOOS GOARCH=$GOARCH go build -o $bin_name $package
+  tar -czf $output_name $bin_name
+  output+=( $output_name )
 done
+
+echo "${output[@]}"
