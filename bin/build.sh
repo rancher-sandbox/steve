@@ -22,4 +22,5 @@ do
 
   env GOOS=$GOOS GOARCH=$GOARCH go build -o $bin_name $package
   tar -czf "${output_dir}/${output_name}" $bin_name
+  sha512sum "${output_dir}/${output_name}" > "${output_dir}/${output_name}.sha512sum"
 done
