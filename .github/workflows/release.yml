@@ -33,20 +33,21 @@ jobs:
     
     - name: Build Steve API
       run: |
-        cd src/steve
-        go build
+        cd bin/
+        chmod +x build.sh
+        ./build.sh
     
     - name: Upload Build
       uses: actions/upload-artifact@v2
       with:
-        name: ${{ matrix.asset_name }}
-        path: ./src/steve/${{ matrix.artifact_name }}
+        path: ./src/steve/release*
         if-no-files-found: error
 
     - name: Upload Assets
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ./src/steve/${{ matrix.artifact_name }}
-        asset_name: ${{ matrix.asset_name }}
+        file: ./src/steve/release*
         tag: ${{ github.ref }}
+        file_glob: true
+  
