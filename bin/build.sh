@@ -2,9 +2,10 @@
 
 package_name=steve
 platforms=("darwin/amd64" "darwin/arm64" "linux/amd64" "windows/amd64")
-output=()
+output_dir=release
 
 cd ../src/steve
+mkdir $output_dir
 
 for platform in "${platforms[@]}"
 do
@@ -20,8 +21,5 @@ do
   fi
 
   env GOOS=$GOOS GOARCH=$GOARCH go build -o $bin_name $package
-  tar -czf $output_name $bin_name
-  output+=( $output_name )
+  tar -czf "${output_dir}/${output_name}" $bin_name
 done
-
-echo "${output[@]}"
